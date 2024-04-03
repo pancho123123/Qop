@@ -33,7 +33,7 @@ def draw_text2(surface, text, size, x, y):
 	surface.blit(text_surface, text_rect)
 
 def draw_hp_bar(surface, x, y, percentage):
-	BAR_LENGHT = 100
+	BAR_LENGHT = 50
 	BAR_HEIGHT = 10
 	fill = (percentage / 100) * BAR_LENGHT
 	border = pygame.Rect(x, y, BAR_LENGHT, BAR_HEIGHT)
@@ -42,7 +42,7 @@ def draw_hp_bar(surface, x, y, percentage):
 	pygame.draw.rect(surface, WHITE, border, 2)
 
 def draw_mana_bar(surface, x, y, percentage):
-	BAR_LENGHT = 100
+	BAR_LENGHT = 50
 	BAR_HEIGHT = 10
 	fill = (percentage / 100) * BAR_LENGHT
 	border = pygame.Rect(x, y, BAR_LENGHT, BAR_HEIGHT)
@@ -63,7 +63,6 @@ class Player1(pygame.sprite.Sprite):
 		self.hp = 100
 		self.mana = 100
 		
-
 	def update(self):
 		self.hp -= 1/25
 		self.mana += 1/50
@@ -123,7 +122,6 @@ class Player2(pygame.sprite.Sprite):
 		self.hp = 100
 		self.mana = 100
 		
-
 	def update(self):
 		self.hp -= 1/25
 		self.mana += 1/50
@@ -184,7 +182,6 @@ class Player3(pygame.sprite.Sprite):
 		self.hp = 100
 		self.mana = 100
 		
-
 	def update(self):
 		self.hp -= 1/25
 		self.mana += 1/50
@@ -232,10 +229,8 @@ class Player3(pygame.sprite.Sprite):
 			self.rect.bottom = 700
 
 class Runa(pygame.sprite.Sprite):
-	
 	def __init__(self):
 		super().__init__()
-		
 		self.image = runas_images[0]
 		self.image.set_colorkey(BLACK)
 		self.rect = self.image.get_rect()
@@ -275,7 +270,6 @@ runa_list = ["img/runarege.png"]
 
 for img in runa_list:
 	runas_images.append(pygame.transform.scale((pygame.image.load(img).convert()),(30,30)))
-
 
 
 def get_high_score():
@@ -422,20 +416,13 @@ while running:
 		all_sprites.add(runa)
 		runa_list.add(runa)	
 		
-		
-		
-		
-		
-
 
 	clock.tick(60)
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			running = False
-
-
-	
-		
+			pygame.quit()
+			sys.exit()
 
 	if player1.hp <= 0 and player2.hp <= 0:
 		game_over3 = True
@@ -445,8 +432,6 @@ while running:
 		game_over2 = True
 	
 	all_sprites.update()
-	
-	
 	
 	# Checar colisiones - jugador1 - runa
 	hits = pygame.sprite.spritecollide(player1, runa_list, True)
@@ -495,21 +480,27 @@ while running:
 	draw_text2(screen, "P3", 20, 800, 6)
 	
 	draw_hp_bar(screen, 20, 5, player1.hp)
-	draw_text2(screen, str(int(player1.hp)) + "/100", 10, 70, 6)
+	draw_text2(screen, str(int(player1.hp)) + "/100", 10, 45, 6)
+	if player1.hp > 0:
+		draw_hp_bar(screen, player1.rect.x, player1.rect.y - 10, player1.hp)
 	
 	draw_hp_bar(screen, 410, 5, player2.hp)
-	draw_text2(screen, str(int(player2.hp))+ "/100", 10, 460, 6)
+	draw_text2(screen, str(int(player2.hp))+ "/100", 10, 435, 6)
+	if player2.hp > 0:
+		draw_hp_bar(screen, player2.rect.x, player2.rect.y - 10, player2.hp)
 	
 	draw_hp_bar(screen, 810, 5, player3.hp)
-	draw_text2(screen, str(int(player3.hp))+ "/100", 10, 860, 6)
+	draw_text2(screen, str(int(player3.hp))+ "/100", 10, 835, 6)
+	if player3.hp > 0:
+		draw_hp_bar(screen, player3.rect.x, player3.rect.y - 10, player3.hp)
 	
 	draw_mana_bar(screen, 20, 15, player1.mana)
-	draw_text1(screen, str(int(player1.mana))+ "/100", 10, 70, 16)
+	draw_text1(screen, str(int(player1.mana))+ "/100", 10, 45, 16)
 	
 	draw_mana_bar(screen, 410, 15, player2.mana)
-	draw_text1(screen, str(int(player2.mana))+ "/100", 10, 460, 16)
+	draw_text1(screen, str(int(player2.mana))+ "/100", 10, 435, 16)
 	
 	draw_mana_bar(screen, 810, 15, player3.mana)
-	draw_text1(screen, str(int(player3.mana))+ "/100", 10, 860, 16)
+	draw_text1(screen, str(int(player3.mana))+ "/100", 10, 835, 16)
 
 	pygame.display.flip()
